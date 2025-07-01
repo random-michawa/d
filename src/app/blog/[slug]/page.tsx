@@ -8,10 +8,12 @@ import { getBlogPost, blogPosts } from "@/lib/blog-data"
 import { Calendar, Clock, ArrowLeft, Share2, BookOpen, ChevronRight } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 
+// Updated interface with proper typing
 interface BlogPostPageProps {
   params: {
     slug: string
   }
+  searchParams?: { [key: string]: string | string[] | undefined }
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
