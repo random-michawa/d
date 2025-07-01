@@ -1,14 +1,13 @@
 import WalletSetupPage from "@/components/wallet-setup-page"
 import type { Metadata } from "next"
 
-interface WalletSetupPageProps {
-  params: {
-    walletId: string
-  }
-}
-
-export async function generateMetadata({ params }: WalletSetupPageProps): Promise<Metadata> {
-  const walletName = params.walletId.charAt(0).toUpperCase() + params.walletId.slice(1)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ walletId: string }>
+}): Promise<Metadata> {
+  const { walletId } = await params
+  const walletName = walletId.charAt(0).toUpperCase() + walletId.slice(1)
 
   return {
     title: `${walletName} Setup - DeFiSecure`,
@@ -16,6 +15,11 @@ export async function generateMetadata({ params }: WalletSetupPageProps): Promis
   }
 }
 
-export default function WalletSetup({ params }: WalletSetupPageProps) {
-  return <WalletSetupPage walletId={params.walletId} />
+export default async function WalletSetup({
+  params,
+}: {
+  params: Promise<{ walletId: string }>
+}) {
+  const { walletId } = await params
+  return <WalletSetupPage walletId={walletId} />
 }
