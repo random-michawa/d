@@ -7,19 +7,16 @@ import { Button } from "@/components/ui/button"
 import { getBlogPost, blogPosts } from "@/lib/blog-data"
 import { Calendar, Clock, ArrowLeft, Share2, BookOpen, ChevronRight } from "lucide-react"
 import ReactMarkdown from "react-markdown"
+import type { PropsWithChildren } from "react"
 
-// 1. Define the params type separately
-type PageParams = {
-  slug: string
+
+// Updated interface with proper typing
+type BlogPostPageProps = {
+  params: { slug: string }
+  searchParams?: Record<string, string | string[] | undefined>
 }
 
-// 2. Define props using Next.js's recommended approach
-interface BlogPostPageProps {
-  params: PageParams
-  searchParams?: { [key: string]: string | string[] | undefined }
-}
-
-export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const post = getBlogPost(params.slug)
 
   if (!post) {
@@ -34,15 +31,14 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   }
 }
 
-// 3. Properly type generateStaticParams
-export async function generateStaticParams(): Promise<PageParams[]> {
+export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     slug: post.id,
   }))
 }
 
-// 4. Component with proper typing
-export default function BlogPostPage({ params }: BlogPostPageProps) {
+export default function BlogPostPage(props: PropsWithChildren<BlogPostPageProps>) {
+  const { params } = props
   const post = getBlogPost(params.slug)
 
   if (!post) {
