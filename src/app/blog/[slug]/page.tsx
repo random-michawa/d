@@ -8,14 +8,11 @@ import { getBlogPost, blogPosts } from "@/lib/blog-data"
 import { Calendar, Clock, ArrowLeft, Share2, BookOpen, ChevronRight } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 
-
-// Updated interface with proper typing
-type BlogPostPageProps = {
+export async function generateMetadata({
+  params,
+}: {
   params: { slug: string }
-  searchParams?: { [key: string]: string | string[] | undefined }
-}
-
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+}): Promise<Metadata> {
   const post = getBlogPost(params.slug)
 
   if (!post) {
@@ -36,7 +33,11 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
+export default function BlogPostPage({
+  params,
+}: {
+  params: { slug: string }
+}) {
   const post = getBlogPost(params.slug)
 
   if (!post) {
