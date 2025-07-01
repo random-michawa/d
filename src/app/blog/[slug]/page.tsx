@@ -37,10 +37,9 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function BlogPostPage(props: PropsWithChildren<BlogPostPageProps>) {
-  const { params } = props
+export default function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getBlogPost(params.slug)
-
+  
   if (!post) {
     notFound()
   }
