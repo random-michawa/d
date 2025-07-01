@@ -11,9 +11,10 @@ import ReactMarkdown from "react-markdown"
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const post = await getBlogPost(params.slug)
+  const { slug } = await params
+  const post = await getBlogPost(slug)
    
 
   if (!post) {
@@ -34,12 +35,14 @@ export async function generateStaticParams() {
   }))
 }
 
+
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const post = await getBlogPost(params.slug)
+  const { slug } = await params
+  const post = await getBlogPost(slug)
 
 
   if (!post) {
