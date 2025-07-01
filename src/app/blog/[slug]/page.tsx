@@ -8,15 +8,18 @@ import { getBlogPost, blogPosts } from "@/lib/blog-data"
 import { Calendar, Clock, ArrowLeft, Share2, BookOpen, ChevronRight } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 
-// Updated interface with proper typing
+// 1. Define the params type separately
+type PageParams = {
+  slug: string
+}
+
+// 2. Define props using Next.js's recommended approach
 interface BlogPostPageProps {
-  params: {
-    slug: string
-  }
+  params: PageParams
   searchParams?: { [key: string]: string | string[] | undefined }
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
   const post = getBlogPost(params.slug)
 
   if (!post) {
@@ -31,12 +34,14 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 }
 
-export async function generateStaticParams() {
+// 3. Properly type generateStaticParams
+export async function generateStaticParams(): Promise<PageParams[]> {
   return blogPosts.map((post) => ({
     slug: post.id,
   }))
 }
 
+// 4. Component with proper typing
 export default function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getBlogPost(params.slug)
 
