@@ -7,13 +7,12 @@ import { Button } from "@/components/ui/button"
 import { getBlogPost, blogPosts } from "@/lib/blog-data"
 import { Calendar, Clock, ArrowLeft, Share2, BookOpen, ChevronRight } from "lucide-react"
 import ReactMarkdown from "react-markdown"
-import type { PropsWithChildren } from "react"
 
 
 // Updated interface with proper typing
 type BlogPostPageProps = {
   params: { slug: string }
-  searchParams?: Record<string, string | string[] | undefined>
+  searchParams?: { [key: string]: string | string[] | undefined }
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -39,7 +38,7 @@ export async function generateStaticParams() {
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getBlogPost(params.slug)
-  
+
   if (!post) {
     notFound()
   }
