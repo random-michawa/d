@@ -1,18 +1,9 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": "next/core-web-vitals",
   "rules": {
-    // Allow explicit 'any' only when necessary (or disable if needed)
-    "@typescript-eslint/no-explicit-any": "warn", // or "off" to disable
-    // Allow unused vars only if prefixed with "_"
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
-    ],
-    // Next.js-specific rules
-    "@next/next/no-img-element": "warn", // Downgrade to warning
-    "react/no-unescaped-entities": "off" // Disable if too restrictive
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react/no-unescaped-entities": "warn",
+    "@next/next/no-img-element": "warn"
   }
 }
