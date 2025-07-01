@@ -11,9 +11,10 @@ export const metadata: Metadata = {
   description: "Latest insights, case studies, and success stories from the world of Web3 security.",
 }
 
-export default function BlogPage() {
-  const featuredPosts = getFeaturedPosts()
+export default async function BlogPage() {
+  const featuredPosts = await getFeaturedPosts()
   const recentPosts = blogPosts.filter((post) => !post.featured)
+
 
   return (
     <main className="min-h-screen bg-slate-900 pt-16 sm:pt-20">

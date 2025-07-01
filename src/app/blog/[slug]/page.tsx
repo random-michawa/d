@@ -13,7 +13,8 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
-  const post = getBlogPost(params.slug)
+  const post = await getBlogPost(params.slug)
+   
 
   if (!post) {
     return {
@@ -33,17 +34,17 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function BlogPostPage({
+export default async function BlogPostPage({
   params,
 }: {
   params: { slug: string }
 }) {
-  const post = getBlogPost(params.slug)
+  const post = await getBlogPost(params.slug)
+
 
   if (!post) {
     notFound()
   }
-
   const relatedPosts = blogPosts.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 2)
 
   return (

@@ -728,14 +728,15 @@ As DeFi evolves, so must security practices:
   },
 ]
 
-export function getBlogPost(id: string): BlogPost | undefined {
+// Add this to your existing blog-data.ts
+export async function getBlogPost(id: string): Promise<BlogPost | undefined> {
   return blogPosts.find((post) => post.id === id)
 }
 
-export function getFeaturedPosts(): BlogPost[] {
+export async function getFeaturedPosts(): Promise<BlogPost[]> {
   return blogPosts.filter((post) => post.featured)
 }
 
-export function getPostsByCategory(category: string): BlogPost[] {
+export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
   return blogPosts.filter((post) => post.category.toLowerCase() === category.toLowerCase())
 }
